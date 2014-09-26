@@ -15,11 +15,11 @@ var vendors = ['angular/angular.js']
 gulp.task('clean', ['clean:js', 'clean:css']);
 gulp.task('clean:js', function () {
     return gulp.src(['./build/js'], {read: false})
-        .pipe($gulp.clean());
+        .pipe($gulp.rimraf());
 });
 gulp.task('clean:css', function () {
     return gulp.src(['./build/css'], {read: false})
-        .pipe($gulp.clean());
+        .pipe($gulp.rimraf());
 });
 
 gulp.task('css', ['clean:css'], function () {
