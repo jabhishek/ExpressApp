@@ -23,7 +23,11 @@ gulp.task('test:server', function() {
     gulp.src('tests/*.spec.js', {read: false})
         .pipe($gulp.mocha({reporter: 'spec'}))
         .on('error', $gulp.util.log);
+});
 
+gulp.task('test:server:watch', function() {
+    "use strict";
+    gulp.start('test:server');
     gulp.watch([ 'index.js', 'routes.js', 'tests/*spec.js'], ['test:server']);
 });
 

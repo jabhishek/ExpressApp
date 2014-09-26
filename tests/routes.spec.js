@@ -4,8 +4,19 @@
 
 
 var assert = require("chai").assert;
-describe('Example test', function () {
-    it('true should be equal to true', function () {
-        assert.equal(true, true);
-    })
+var app = require('../index');
+var request = require('supertest');
+
+describe('GET /', function() {
+
+    it('should respond with success', function(done) {
+        request(app)
+            .get('/')
+            .expect(200)
+            .end(function(err, res) {
+                if (err) return done(err);
+                done();
+            });
+    });
 });
+

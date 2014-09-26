@@ -16,3 +16,5 @@ app.use(express.static(__dirname + "/build"));
 require("./routes")(app);
 
 app.listen(port);
+
+module.exports = app;
