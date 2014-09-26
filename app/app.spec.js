@@ -1,8 +1,14 @@
 /* globals describe, it, expect */
 
-describe("Sample test", function() {
+describe("App", function() {
     "use strict";
-    it("should have 1 equal to 1", function() {
-        expect(1).toBe(1);
+    var app;
+    // Initialize the controller and a mock scope
+    beforeEach(inject(function () {
+        app = angular.module('HousePointsApp');
+    }));
+
+    it("to be defined", function() {
+        expect(app).toBeDefined();
     });
 });
