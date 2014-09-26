@@ -1,17 +1,45 @@
 var gulp = require('gulp');
+var path = require('path');
 var minify = require('gulp-minify-css');
 var $gulp = require('gulp-load-plugins')({
     lazy: false
 });
 server = require('gulp-develop-server');
+var prependBowerPath = function (package) {
+    return path.join('./app/bower_components/', package);
+};
 
-gulp.task('css', ['clean'], function () {
+var vendors = ['angular/angular.js']
+    .map(prependBowerPath);
+
+gulp.task('clean', ['clean:js', 'clean:css']);
+gulp.task('clean:js', function () {
+    return gulp.src(['./build/js'], {read: false})
+        .pipe($gulp.clean());
+});
+gulp.task('clean:css', function () {
+    return gulp.src(['./build/css'], {read: false})
+        .pipe($gulp.clean());
+});
+
+gulp.task('css', ['clean:css'], function () {
     return gulp.src(['./app/styles/app.less'])
         .pipe($gulp.less())
         .pipe(minify())
         .pipe($gulp.rev())
-        .pipe(gulp.dest('build/css/'));
+        .pipe(gulp.dest('build/css/'))
+        .pipe($gulp.size({showFiles: true}));;
 });
+
+gulp.task('vendors', ['clean:js'], function () {
+    return gulp.src(vendors)
+        .pipe($gulp.uglify())
+        .pipe($gulp.concat('vendors.min.js'))
+        .pipe($gulp.rev())
+        .pipe(gulp.dest('build/js/'))
+        .pipe($gulp.size({showFiles: true}));
+});
+
 
 gulp.task('server:start', ['build'], function() {
     "use strict";
@@ -46,15 +74,11 @@ gulp.task('server:restart', ['build'], function () {
     restart();
 });
 
-gulp.task('clean', function () {
-    return gulp.src(['./build'], {read: false})
-        .pipe($gulp.clean());
-});
 
 
-gulp.task('html', ['css', 'clean'], function () {
+gulp.task('html', ['css', 'vendors', 'clean'], function () {
     return gulp.src('./app/index.html')
-        .pipe($gulp.inject(gulp.src(['./build/css/*.css'], {
+        .pipe($gulp.inject(gulp.src(['./build/{js,css}/{vendors,app}*'], {
             read: false
         }), {
             addRootSlash: false,
@@ -63,6 +87,6 @@ gulp.task('html', ['css', 'clean'], function () {
         .pipe(gulp.dest('./build/'));
 });
 
-gulp.task('build', ['clean', 'css', 'html']);
+gulp.task('build', ['clean', 'vendors', 'css', 'html']);
 
 gulp.task('default', ['build', 'server:start', 'watch']);
