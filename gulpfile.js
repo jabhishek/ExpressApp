@@ -3,13 +3,34 @@ var minify = require('gulp-minify-css');
 var $gulp = require('gulp-load-plugins')({
     lazy: false
 });
+server = require('gulp-develop-server'),
 
-gulp.task('css', function () {
+gulp.task('css', ['clean'], function () {
     return gulp.src(['./app/styles/app.less'])
         .pipe($gulp.less())
         .pipe(minify())
         .pipe($gulp.rev())
         .pipe(gulp.dest('build/css/'));
+});
+
+gulp.task('server:start', ['build'], function() {
+    "use strict";
+    server.listen({path: 'index.js'}, $gulp.livereload.listen);
+});
+
+// restart server if app.js changed
+gulp.task('watch', function () {
+    gulp.watch([ '*.js', 'app/**/*' ], ['server:restart']);
+});
+
+// restart server if app.js changed
+gulp.task('server:restart', ['build'], function () {
+    function restart() {
+        server.changed( function( error ) {
+            if( ! error ) $gulp.livereload.changed();
+        });
+    }
+    restart();
 });
 
 gulp.task('clean', function () {
@@ -18,7 +39,7 @@ gulp.task('clean', function () {
 });
 
 
-gulp.task('html', ['css'], function () {
+gulp.task('html', ['css', 'clean'], function () {
     return gulp.src('./app/index.html')
         .pipe($gulp.inject(gulp.src(['./build/css/*.css'], {
             read: false
@@ -29,12 +50,6 @@ gulp.task('html', ['css'], function () {
         .pipe(gulp.dest('./build/'));
 });
 
-gulp.task('build', ['clean'], function() {
-    "use strict";
-    return gulp.start('css', 'html');
-});
+gulp.task('build', ['clean', 'css', 'html']);
 
-gulp.task('default', function() {
-    "use strict";
-   return gulp.start('build');
-});
+gulp.task('default', ['build', 'server:start', 'watch']);

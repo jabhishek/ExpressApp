@@ -9,8 +9,9 @@ var port = process.env.port || 9000;
 
 var app = express();
 app.use(morgan('dev'));
-app.use(express.static(__dirname + "/build"));
 app.use(require('connect-livereload')());
+app.use(express.static(__dirname + "/build"));
+
 // setup routes
 require("./routes")(app);
 
