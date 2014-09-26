@@ -3,7 +3,7 @@ var minify = require('gulp-minify-css');
 var $gulp = require('gulp-load-plugins')({
     lazy: false
 });
-server = require('gulp-develop-server'),
+server = require('gulp-develop-server');
 
 gulp.task('css', ['clean'], function () {
     return gulp.src(['./app/styles/app.less'])
@@ -18,9 +18,18 @@ gulp.task('server:start', ['build'], function() {
     server.listen({path: 'index.js'}, $gulp.livereload.listen);
 });
 
+gulp.task('test:server', function() {
+    "use strict";
+    gulp.src('tests/*.spec.js', {read: false})
+        .pipe($gulp.mocha({reporter: 'spec'}))
+        .on('error', $gulp.util.log);
+
+    gulp.watch([ 'index.js', 'routes.js', 'tests/*spec.js'], ['test:server']);
+});
+
 // restart server if app.js changed
 gulp.task('watch', function () {
-    gulp.watch([ 'app.js', 'routes.js', 'app/**/*' ], ['server:restart']);
+    gulp.watch([ 'index.js', 'routes.js', 'app/**/*' ], ['server:restart']);
 });
 
 // restart server if app.js changed
