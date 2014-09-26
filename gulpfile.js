@@ -13,6 +13,14 @@ var vendors = ['angular/angular.js']
     .map(prependBowerPath);
 
 gulp.task('clean', ['clean:js', 'clean:css']);
+
+gulp.task('jshint', function () {
+    return gulp.src(['app/app*.js'])
+        .pipe($gulp.jshint())
+        .pipe($gulp.jshint.reporter('default'));
+
+});
+
 gulp.task('clean:js', function () {
     return gulp.src(['./build/js'], {read: false})
         .pipe($gulp.rimraf());
@@ -62,6 +70,7 @@ gulp.task('test:server:watch', function() {
 // restart server if app.js changed
 gulp.task('watch', function () {
     gulp.watch([ 'index.js', 'routes.js', 'app/**/*' ], ['server:restart']);
+    gulp.watch(['app/app*.js'], ['jshint']);
 });
 
 // restart server if app.js changed
@@ -87,6 +96,6 @@ gulp.task('html', ['css', 'vendors', 'clean'], function () {
         .pipe(gulp.dest('./build/'));
 });
 
-gulp.task('build', ['clean', 'vendors', 'css', 'html']);
+gulp.task('build', ['jshint', 'clean', 'vendors', 'css', 'html']);
 
-gulp.task('default', ['build', 'server:start', 'watch']);
+gulp.task('default', ['jshint', 'build', 'server:start', 'watch']);

@@ -1,5 +1,5 @@
 
 (function() {
-    "use strict";
-    angular.module("HousePointsApp", []);
+    'use strict';
+    angular.module('HousePointsApp', []);
 })();
