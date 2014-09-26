@@ -7,16 +7,10 @@ var router = express.Router();
 module.exports = function (app) {
     "use strict";
     app.use(router);
-    router.get("/", function (req, res, next) {
-        "use strict";
-        res.send("Hello World from router!!");
 
-    });
-
-    router.get("/:param", function (req, res, next) {
+    router.get(function (req, res) {
         "use strict";
         console.log(req.params);
-        res.send("Hello World with params!!");
-
+        res.status(404).end();
     });
 };
