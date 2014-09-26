@@ -20,7 +20,7 @@ gulp.task('server:start', ['build'], function() {
 
 // restart server if app.js changed
 gulp.task('watch', function () {
-    gulp.watch([ '*.js', 'app/**/*' ], ['server:restart']);
+    gulp.watch([ 'app.js', 'routes.js', 'app/**/*' ], ['server:restart']);
 });
 
 // restart server if app.js changed
