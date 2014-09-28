@@ -4,7 +4,9 @@ var minify = require('gulp-minify-css');
 var $gulp = require('gulp-load-plugins')({
     lazy: false
 });
-server = require('gulp-develop-server');
+var protractor = require("gulp-protractor").protractor;
+
+var server = require('gulp-develop-server');
 var prependBowerPath = function (packageName) {
     return path.join('./app/bower_components/', packageName);
 };
@@ -20,6 +22,17 @@ gulp.task('jshint', function () {
     return gulp.src(['app/app*.js'])
         .pipe($gulp.jshint())
         .pipe($gulp.jshint.reporter('default'));
+
+});
+
+gulp.task('protractor', function () {
+    return gulp.src(["./app/**/*e2e.spec.js"])
+        .pipe(protractor({
+            configFile: "app/protractor.config.js",
+            args: ['--baseUrl', 'http://127.0.0.1:8000']
+        }))
+        .on('error', function(e) { throw e })
+
 
 });
 
@@ -112,6 +125,9 @@ gulp.task('html', ['css', 'vendors', 'js', 'clean'], function () {
         }))
         .pipe(gulp.dest('./build/'));
 });
+
+var webdriver_standalone = require("gulp-protractor").webdriver_standalone;
+gulp.task('webdriver_standalone', webdriver_standalone);
 
 gulp.task('build', ['clean', 'vendors', 'js', 'css', 'html']);
 
