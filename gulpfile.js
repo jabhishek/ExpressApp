@@ -5,12 +5,14 @@ var $gulp = require('gulp-load-plugins')({
     lazy: false
 });
 server = require('gulp-develop-server');
-var prependBowerPath = function (package) {
-    return path.join('./app/bower_components/', package);
+var prependBowerPath = function (packageName) {
+    return path.join('./app/bower_components/', packageName);
 };
 
 var vendors = ['angular/angular.js']
     .map(prependBowerPath);
+
+var appScripts = ['app/app.js'];
 
 gulp.task('clean', ['clean:js', 'clean:css']);
 
@@ -36,13 +38,22 @@ gulp.task('css', ['clean:css'], function () {
         .pipe(minify())
         .pipe($gulp.rev())
         .pipe(gulp.dest('build/css/'))
-        .pipe($gulp.size({showFiles: true}));;
+        .pipe($gulp.size({showFiles: true}));
 });
 
 gulp.task('vendors', ['clean:js'], function () {
     return gulp.src(vendors)
         .pipe($gulp.uglify())
         .pipe($gulp.concat('vendors.min.js'))
+        .pipe($gulp.rev())
+        .pipe(gulp.dest('build/js/'))
+        .pipe($gulp.size({showFiles: true}));
+});
+
+gulp.task('js', ['clean:js', 'jshint'], function () {
+    return gulp.src(appScripts)
+        .pipe($gulp.uglify())
+        .pipe($gulp.concat('app.min.js'))
         .pipe($gulp.rev())
         .pipe(gulp.dest('build/js/'))
         .pipe($gulp.size({showFiles: true}));
@@ -85,17 +96,23 @@ gulp.task('server:restart', ['build'], function () {
 
 
 
-gulp.task('html', ['css', 'vendors', 'clean'], function () {
+gulp.task('html', ['css', 'vendors', 'js', 'clean'], function () {
     return gulp.src('./app/index.html')
-        .pipe($gulp.inject(gulp.src(['./build/{js,css}/{vendors,app}*'], {
-            read: false
-        }), {
+        .pipe($gulp.inject(gulp.src(['./build/css/app*'], { read: false }), {
             addRootSlash: false,
             ignorePath: 'build'
+        }))
+        .pipe($gulp.inject(gulp.src(['./build/js/vendors*'], { read: false }), {
+            addRootSlash: false,
+            ignorePath: 'build', name: 'vendors'
+        }))
+        .pipe($gulp.inject(gulp.src(['./build/js/app*'], { read: false }), {
+            addRootSlash: false,
+            ignorePath: 'build', name: 'app'
         }))
         .pipe(gulp.dest('./build/'));
 });
 
-gulp.task('build', ['jshint', 'clean', 'vendors', 'css', 'html']);
+gulp.task('build', ['clean', 'vendors', 'js', 'css', 'html']);
 
-gulp.task('default', ['jshint', 'build', 'server:start', 'watch']);
+gulp.task('default', ['build', 'server:start', 'watch']);
