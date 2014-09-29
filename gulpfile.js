@@ -19,7 +19,7 @@ var appScripts = ['app/app.js'];
 gulp.task('clean', ['clean:js', 'clean:css']);
 
 gulp.task('jshint', function () {
-    return gulp.src(['app/app*.js'])
+    return gulp.src(appScripts)
         .pipe($gulp.jshint())
         .pipe($gulp.jshint.reporter('default'));
 
@@ -32,8 +32,19 @@ gulp.task('protractor', function () {
             args: ['--baseUrl', 'http://127.0.0.1:8000']
         }))
         .on('error', function(e) { throw e })
+});
 
+gulp.task('test:server', function() {
+    "use strict";
+    gulp.src('tests/*.spec.js', {read: false})
+        .pipe($gulp.mocha({reporter: 'spec'}))
+        .on('error', $gulp.util.log);
+});
 
+gulp.task('test:server:watch', function() {
+    "use strict";
+    gulp.start('test:server');
+    gulp.watch([ 'index.js', 'routes.js', 'tests/*spec.js'], ['test:server']);
 });
 
 gulp.task('clean:js', function () {
@@ -78,23 +89,10 @@ gulp.task('server:start', ['build'], function() {
     server.listen({path: 'index.js'}, $gulp.livereload.listen);
 });
 
-gulp.task('test:server', function() {
-    "use strict";
-    gulp.src('tests/*.spec.js', {read: false})
-        .pipe($gulp.mocha({reporter: 'spec'}))
-        .on('error', $gulp.util.log);
-});
-
-gulp.task('test:server:watch', function() {
-    "use strict";
-    gulp.start('test:server');
-    gulp.watch([ 'index.js', 'routes.js', 'tests/*spec.js'], ['test:server']);
-});
-
 // restart server if app.js changed
 gulp.task('watch', function () {
     gulp.watch([ 'index.js', 'routes.js', 'app/**/*' ], ['server:restart']);
-    gulp.watch(['app/app*.js'], ['jshint']);
+    gulp.watch(appScripts, ['jshint']);
 });
 
 // restart server if app.js changed
@@ -107,9 +105,7 @@ gulp.task('server:restart', ['build'], function () {
     restart();
 });
 
-
-
-gulp.task('html', ['css', 'vendors', 'js', 'clean'], function () {
+gulp.task('html', ['css', 'vendors', 'js'], function () {
     return gulp.src('./app/index.html')
         .pipe($gulp.inject(gulp.src(['./build/css/app*'], { read: false }), {
             addRootSlash: false,
@@ -126,9 +122,6 @@ gulp.task('html', ['css', 'vendors', 'js', 'clean'], function () {
         .pipe(gulp.dest('./build/'));
 });
 
-var webdriver_standalone = require("gulp-protractor").webdriver_standalone;
-gulp.task('webdriver_standalone', webdriver_standalone);
-
-gulp.task('build', ['clean', 'vendors', 'js', 'css', 'html']);
+gulp.task('build', ['vendors', 'js', 'css', 'html']);
 
 gulp.task('default', ['build', 'server:start', 'watch']);
