@@ -14,7 +14,7 @@ var prependBowerPath = function (packageName) {
 var vendors = ['angular/angular.js']
     .map(prependBowerPath);
 
-var appScripts = ['app/app.js'];
+var appScripts = ['app/*.js'];
 /*
 var karmaScripts = require("./karma.conf.js")('files');
 console.log(karmaScripts);
@@ -59,7 +59,7 @@ gulp.task('protractor', function () {
 
 gulp.task('test:server', function() {
     "use strict";
-    gulp.src('tests/server/**/*.spec.js', {read: false})
+    return gulp.src('tests/server/**/*.spec.js', {read: false})
         .pipe($gulp.mocha({reporter: 'spec'}))
         .on('error', $gulp.util.log);
 });
@@ -117,7 +117,8 @@ gulp.task('server:start', ['build'], function() {
 // restart server if app.js changed
 gulp.task('watch', function () {
     gulp.watch([ 'index.js', 'routes.js', 'app/**/*' ], ['server:restart']);
-    gulp.watch(appScripts, ['jshint']);
+    gulp.watch(appScripts, ['jshint', 'karma']);
+    gulp.watch([ 'index.js', 'routes.js', 'tests/server/**/*spec.js'], ['test:server']);
 });
 
 // restart server if app.js changed
