@@ -15,6 +15,10 @@ var vendors = ['angular/angular.js']
     .map(prependBowerPath);
 
 var appScripts = ['app/app.js'];
+/*
+var karmaScripts = require("./karma.conf.js")('files');
+console.log(karmaScripts);
+*/
 
 gulp.task('clean', ['clean:js', 'clean:css']);
 
@@ -23,6 +27,25 @@ gulp.task('jshint', function () {
         .pipe($gulp.jshint())
         .pipe($gulp.jshint.reporter('default'));
 
+});
+
+gulp.task('karma', function() {
+    // Be sure to return the stream
+    return gulp.src([
+        'bower_components/angular/angular.js',
+        'bower_components/angular-mocks/angular-mocks.js',
+        'app/*.js',
+        'tests/unit/**/*.js'
+    ])
+        .pipe($gulp.using())
+        .pipe($gulp.karma({
+            configFile: 'karma.conf.js',
+            action: 'watch'
+        }))
+        .on('error', function(err) {
+            // Make sure failed tests cause gulp to exit non-zero
+            throw err;
+        });
 });
 
 gulp.task('protractor', function () {
@@ -46,6 +69,8 @@ gulp.task('test:server:watch', function() {
     gulp.start('test:server');
     gulp.watch([ 'index.js', 'routes.js', 'tests/server/**/*spec.js'], ['test:server']);
 });
+
+gulp.task('tests', ['karma', 'test:server:watch']);
 
 gulp.task('clean:js', function () {
     return gulp.src(['./build/js'], {read: false})
