@@ -6,5 +6,5 @@ exports.config = {
             args: ['--test-type']
         }
     },
-    specs: ['**/*e2e.spec.js']
+    specs: ['tests/e2e/**/*e2e.spec.js']
 };

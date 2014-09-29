@@ -4,7 +4,7 @@
 
 
 var assert = require("chai").assert;
-var app = require('../index');
+var app = require('../../index');
 var request = require('supertest');
 
 describe('GET /', function() {

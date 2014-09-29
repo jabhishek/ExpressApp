@@ -8,7 +8,7 @@ var protractor = require("gulp-protractor").protractor;
 
 var server = require('gulp-develop-server');
 var prependBowerPath = function (packageName) {
-    return path.join('./app/bower_components/', packageName);
+    return path.join('./bower_components/', packageName);
 };
 
 var vendors = ['angular/angular.js']
@@ -26,9 +26,9 @@ gulp.task('jshint', function () {
 });
 
 gulp.task('protractor', function () {
-    return gulp.src(["./app/**/*e2e.spec.js"])
+    return gulp.src(["./tests/e2e/**/*e2e.spec.js"])
         .pipe(protractor({
-            configFile: "app/protractor.config.js",
+            configFile: "protractor.config.js",
             args: ['--baseUrl', 'http://127.0.0.1:8000']
         }))
         .on('error', function(e) { throw e })
@@ -36,7 +36,7 @@ gulp.task('protractor', function () {
 
 gulp.task('test:server', function() {
     "use strict";
-    gulp.src('tests/*.spec.js', {read: false})
+    gulp.src('tests/server/**/*.spec.js', {read: false})
         .pipe($gulp.mocha({reporter: 'spec'}))
         .on('error', $gulp.util.log);
 });
@@ -44,7 +44,7 @@ gulp.task('test:server', function() {
 gulp.task('test:server:watch', function() {
     "use strict";
     gulp.start('test:server');
-    gulp.watch([ 'index.js', 'routes.js', 'tests/*spec.js'], ['test:server']);
+    gulp.watch([ 'index.js', 'routes.js', 'tests/server/**/*spec.js'], ['test:server']);
 });
 
 gulp.task('clean:js', function () {
