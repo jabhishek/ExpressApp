@@ -6,5 +6,6 @@ exports.config = {
             args: ['--test-type']
         }
     },
+    baseUrl: 'http://localhost:' + (process.env.PORT || '9000'),
     specs: ['tests/e2e/**/*e2e.spec.js']
 };
