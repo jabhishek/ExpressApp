@@ -11,8 +11,9 @@ var prependBowerPath = function (packageName) {
     return path.join('./bower_components/', packageName);
 };
 
-var vendors = ['angular/angular.js']
-    .map(prependBowerPath);
+var vendors = ['angular/angular.js',
+               'angular-ui-router/release/angular-ui-router.js']
+               .map(prependBowerPath);
 
 var appScripts = ['app/*.js'];
 /*
@@ -117,7 +118,7 @@ gulp.task('server:start', ['build'], function() {
 // restart server if app.js changed
 gulp.task('watch', function () {
     gulp.watch([ 'index.js', 'routes.js', 'app/**/*' ], ['server:restart']);
-    gulp.watch(appScripts, ['jshint', 'karma']);
+    gulp.watch(['app/*.js', 'tests/unit/**/*.js'], ['jshint', 'karma']);
     gulp.watch([ 'index.js', 'routes.js', 'tests/server/**/*spec.js'], ['test:server']);
 });
 
