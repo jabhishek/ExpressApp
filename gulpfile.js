@@ -24,7 +24,7 @@ console.log(karmaScripts);
 gulp.task('clean', ['clean:js', 'clean:css']);
 
 gulp.task('jshint', function () {
-    return gulp.src(appScripts)
+    return gulp.src(['app/*.js', 'tests/**/*.js'])
         .pipe($gulp.jshint())
         .pipe($gulp.jshint.reporter('default'));
 
@@ -35,6 +35,7 @@ gulp.task('karma', function() {
     return gulp.src([
         'bower_components/angular/angular.js',
         'bower_components/angular-mocks/angular-mocks.js',
+        'bower_components/angular-ui-router/release/angular-ui-router.js',
         'app/*.js',
         'tests/unit/**/*.js'
     ])
