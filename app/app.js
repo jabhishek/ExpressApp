@@ -1,5 +1,5 @@
 
 (function() {
     'use strict';
-    angular.module('HousePointsApp', []);
+    angular.module('HousePointsApp', ['ui.router']);
 })();
