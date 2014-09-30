@@ -19,7 +19,6 @@ describe('App', function () {
         beforeEach(inject(function () {
             app = angular.module(appName);
             deps = app.value(appName).requires;
-            console.log(app);
         }));
 
         function hasModule(module) {
@@ -33,17 +32,29 @@ describe('App', function () {
 });
 
 describe("routes", function () {
-    var app, state;
+    var app, $state, $rootScope;
     var appName = 'HousePointsApp';
     beforeEach(module(appName));
-    beforeEach(inject(function (_$state_) {
+    beforeEach(inject(function (_$state_, _$rootScope_) {
         app = angular.module(appName);
-        state = _$state_;
+        $state = _$state_;
+        $rootScope = _$rootScope_;
     }));
 
     it("should have url / configured for state main", function () {
-        console.log(state);
-        expect(state.href('main')).toEqual('/');
+        expect($state.href('main')).toEqual('/');
+    });
+
+    it("should have controller mainController configured for state main", function () {
+        $state.go('main');
+        $rootScope.$digest();
+        expect($state.current.controller).toEqual('mainController as mainVm');
+    });
+
+    it("should have controller mainController configured for state main", function () {
+        $state.go('main');
+        $rootScope.$digest();
+        expect($state.current.controller).toEqual('mainController as mainVm');
     });
 });
 

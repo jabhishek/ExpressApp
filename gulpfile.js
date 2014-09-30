@@ -15,7 +15,7 @@ var vendors = ['angular/angular.js',
                'angular-ui-router/release/angular-ui-router.js']
                .map(prependBowerPath);
 
-var appScripts = ['app/*.js'];
+var appScripts = ['app/**/*.js'];
 /*
 var karmaScripts = require("./karma.conf.js")('files');
 console.log(karmaScripts);
@@ -51,12 +51,12 @@ gulp.task('karma', function() {
 });
 
 gulp.task('protractor', function () {
+    server.listen({path: 'index.js'});
     return gulp.src(["./tests/e2e/**/*e2e.spec.js"])
         .pipe(protractor({
-            configFile: "protractor.config.js",
-            args: ['--baseUrl', 'http://127.0.0.1:8000']
+            configFile: "protractor.config.js"
         }))
-        .on('error', function(e) { throw e })
+        .on('error', $gulp.util.log);
 });
 
 gulp.task('test:server', function() {
@@ -103,9 +103,11 @@ gulp.task('vendors', ['clean:js'], function () {
 
 gulp.task('js', ['clean:js', 'jshint'], function () {
     return gulp.src(appScripts)
+
         .pipe($gulp.uglify())
         .pipe($gulp.concat('app.min.js'))
         .pipe($gulp.rev())
+
         .pipe(gulp.dest('build/js/'))
         .pipe($gulp.size({showFiles: true}));
 });

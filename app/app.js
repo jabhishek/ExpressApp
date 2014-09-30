@@ -2,9 +2,14 @@
 (function() {
     'use strict';
     angular.module('HousePointsApp', ['ui.router'])
-        .config(function($stateProvider) {
+        .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
             $stateProvider.state('main', {
-                url: '/'
+                url: '/',
+                template: '<div>{{mainVm.message}}</div>',
+                controller: 'mainController as mainVm'
             });
-        });
+
+            $urlRouterProvider.otherwise('/');
+        }]);
 })();
+
