@@ -84,6 +84,7 @@ gulp.task('clean:css', function () {
 gulp.task('css', ['clean:css'], function () {
     return gulp.src(['client/app/styles/app.less'])
         .pipe($gulp.less())
+        .pipe($gulp.autoprefixer())
         .pipe(minify())
         .pipe($gulp.rev())
         .pipe(gulp.dest('build/css/'))
