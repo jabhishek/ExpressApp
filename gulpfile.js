@@ -156,7 +156,9 @@ gulp.task('html', ['css', 'vendors', 'js', 'templates'], function () {
             addRootSlash: false,
             ignorePath: 'build', name: 'app'
         }))
-        .pipe(gulp.dest('./build/'));
+        .pipe($gulp.htmlmin({collapseWhitespace: true, removeComments: true }))
+        .pipe(gulp.dest('./build/'))
+        .pipe($gulp.size({showFiles: true}));
 });
 
 gulp.task('build', ['html']);
