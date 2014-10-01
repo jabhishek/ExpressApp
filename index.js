@@ -11,6 +11,7 @@ var app = express();
 app.use(morgan('dev'));
 app.use(require('connect-livereload')());
 app.use(express.static(__dirname + "/build"));
+app.set('appPath', 'client');
 
 // setup routes
 require("./routes")(app);

@@ -8,23 +8,19 @@ var protractor = require("gulp-protractor").protractor;
 
 var server = require('gulp-develop-server');
 var prependBowerPath = function (packageName) {
-    return path.join('./bower_components/', packageName);
+    return path.join('./client/bower_components/', packageName);
 };
 
 var vendors = ['angular/angular.js',
                'angular-ui-router/release/angular-ui-router.js']
                .map(prependBowerPath);
 
-var appScripts = ['app/**/*.js'];
-/*
-var karmaScripts = require("./karma.conf.js")('files');
-console.log(karmaScripts);
-*/
+var appScripts = ['client/app/**/*.js'];
 
 gulp.task('clean', ['clean:js', 'clean:css']);
 
 gulp.task('jshint', function () {
-    return gulp.src(['app/*.js', 'tests/**/*.js'])
+    return gulp.src(['client/app/**/*.js', 'tests/**/*.js'])
         .pipe($gulp.jshint())
         .pipe($gulp.jshint.reporter('default'));
 
@@ -36,7 +32,7 @@ gulp.task('karma', function() {
         'bower_components/angular/angular.js',
         'bower_components/angular-mocks/angular-mocks.js',
         'bower_components/angular-ui-router/release/angular-ui-router.js',
-        'app/*.js',
+        'client/app/**/*.js',
         'tests/unit/**/*.js'
     ])
         .pipe($gulp.using())
@@ -84,7 +80,7 @@ gulp.task('clean:css', function () {
 });
 
 gulp.task('css', ['clean:css'], function () {
-    return gulp.src(['./app/styles/app.less'])
+    return gulp.src(['client/app/styles/app.less'])
         .pipe($gulp.less())
         .pipe(minify())
         .pipe($gulp.rev())
@@ -120,8 +116,8 @@ gulp.task('server:start', ['build'], function() {
 
 // restart server if app.js changed
 gulp.task('watch', function () {
-    gulp.watch([ 'index.js', 'routes.js', 'app/**/*' ], ['server:restart']);
-    gulp.watch(['app/*.js', 'tests/unit/**/*.js'], ['jshint', 'karma']);
+    gulp.watch([ 'index.js', 'routes.js', 'client/app/**/*' ], ['server:restart']);
+    gulp.watch([ 'client/app/*.js', 'tests/unit/**/*.js'], ['jshint', 'karma']);
     gulp.watch([ 'index.js', 'routes.js', 'tests/server/**/*spec.js'], ['test:server']);
 });
 
@@ -136,7 +132,7 @@ gulp.task('server:restart', ['build'], function () {
 });
 
 gulp.task('html', ['css', 'vendors', 'js'], function () {
-    return gulp.src('./app/index.html')
+    return gulp.src('./client/index.html')
         .pipe($gulp.inject(gulp.src(['./build/css/app*'], { read: false }), {
             addRootSlash: false,
             ignorePath: 'build'
