@@ -7,6 +7,8 @@ var $gulp = require('gulp-load-plugins')({
 var protractor = require("gulp-protractor").protractor;
 var templateCache = require('gulp-angular-templatecache');
 var server = require('gulp-develop-server');
+var ngAnnotate = require('gulp-ng-annotate');
+
 var prependBowerPath = function (packageName) {
     return path.join('./client/bower_components/', packageName);
 };
@@ -99,7 +101,7 @@ gulp.task('vendors', ['clean:js'], function () {
 
 gulp.task('js', ['clean:js', 'jshint'], function () {
     return gulp.src(appScripts)
-
+        .pipe(ngAnnotate())
         .pipe($gulp.uglify())
         .pipe($gulp.concat('app.min.js'))
         .pipe($gulp.rev())
@@ -111,6 +113,8 @@ gulp.task('js', ['clean:js', 'jshint'], function () {
 gulp.task('templates', ['clean:js'], function () {
     return gulp.src('client/app/**/*.html')
         .pipe(templateCache({ module: 'HousePointsApp' }))
+        .pipe(ngAnnotate())
+        .pipe($gulp.uglify())
         .pipe($gulp.rev())
         .pipe(gulp.dest('build/js'));
 });

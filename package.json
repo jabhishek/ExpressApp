@@ -41,6 +41,7 @@
     "karma-jasmine": "^0.2.2",
     "karma-chrome-launcher": "^0.1.4",
     "gulp-angular-templatecache": "^1.4.1",
-    "gulp-htmlmin": "^0.2.0"
+    "gulp-htmlmin": "^0.2.0",
+    "gulp-ng-annotate": "^0.3.3"
   }
 }
