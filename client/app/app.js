@@ -5,7 +5,7 @@
         .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
             $stateProvider.state('main', {
                 url: '/',
-                template: '<div>{{mainVm.message}}</div>',
+                templateUrl: 'main/main.html',
                 controller: 'mainController as mainVm'
             });
 

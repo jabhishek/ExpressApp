@@ -5,7 +5,7 @@ var $gulp = require('gulp-load-plugins')({
     lazy: false
 });
 var protractor = require("gulp-protractor").protractor;
-
+var templateCache = require('gulp-angular-templatecache');
 var server = require('gulp-develop-server');
 var prependBowerPath = function (packageName) {
     return path.join('./client/bower_components/', packageName);
@@ -108,6 +108,13 @@ gulp.task('js', ['clean:js', 'jshint'], function () {
         .pipe($gulp.size({showFiles: true}));
 });
 
+gulp.task('templates', ['clean:js'], function () {
+    return gulp.src('client/app/**/*.html')
+        .pipe(templateCache({ module: 'HousePointsApp' }))
+        .pipe($gulp.rev())
+        .pipe(gulp.dest('build/js'));
+});
+
 
 gulp.task('server:start', ['build'], function() {
     "use strict";
@@ -131,7 +138,7 @@ gulp.task('server:restart', ['build'], function () {
     restart();
 });
 
-gulp.task('html', ['css', 'vendors', 'js'], function () {
+gulp.task('html', ['css', 'vendors', 'js', 'templates'], function () {
     return gulp.src('./client/index.html')
         .pipe($gulp.inject(gulp.src(['./build/css/app*'], { read: false }), {
             addRootSlash: false,
@@ -141,6 +148,10 @@ gulp.task('html', ['css', 'vendors', 'js'], function () {
             addRootSlash: false,
             ignorePath: 'build', name: 'vendors'
         }))
+        .pipe($gulp.inject(gulp.src(['./build/js/templates*'], { read: false }), {
+            addRootSlash: false,
+            ignorePath: 'build', name: 'templates'
+        }))
         .pipe($gulp.inject(gulp.src(['./build/js/app*'], { read: false }), {
             addRootSlash: false,
             ignorePath: 'build', name: 'app'
@@ -148,6 +159,6 @@ gulp.task('html', ['css', 'vendors', 'js'], function () {
         .pipe(gulp.dest('./build/'));
 });
 
-gulp.task('build', ['vendors', 'js', 'css', 'html']);
+gulp.task('build', ['html']);
 
 gulp.task('default', ['build', 'server:start', 'watch']);
