@@ -127,7 +127,7 @@ gulp.task('server:start', ['build'], function() {
 
 // restart server if app.js changed
 gulp.task('watch', function () {
-    gulp.watch([ 'index.js', 'routes.js', 'client/app/**/*' ], ['server:restart']);
+    gulp.watch([ 'index.js', 'routes.js', 'client/app/**/*', 'client/index.html' ], ['server:restart']);
     gulp.watch([ 'client/app/*.js', 'tests/unit/**/*.js'], ['jshint', 'karma']);
     gulp.watch([ 'index.js', 'routes.js', 'tests/server/**/*spec.js'], ['test:server']);
 });

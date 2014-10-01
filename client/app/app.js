@@ -2,7 +2,7 @@
 (function() {
     'use strict';
     angular.module('HousePointsApp', ['ui.router'])
-        .config(function($stateProvider, $urlRouterProvider) {
+        .config(function($stateProvider, $urlRouterProvider, $locationProvider) {
             $stateProvider.state('main', {
                 url: '/',
                 templateUrl: 'main/main.html',
@@ -10,6 +10,8 @@
             });
 
             $urlRouterProvider.otherwise('/');
+
+            $locationProvider.html5Mode(true);
         });
 })();
 
