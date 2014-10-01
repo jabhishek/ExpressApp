@@ -14,7 +14,7 @@ app.use(express.static(__dirname + "/build"));
 app.set('appPath', 'build');
 
 // setup routes
-require("./routes")(app);
+require("./server/routes")(app);
 
 app.listen(port);
 

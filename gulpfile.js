@@ -67,7 +67,7 @@ gulp.task('test:server', function() {
 gulp.task('test:server:watch', function() {
     "use strict";
     gulp.start('test:server');
-    gulp.watch([ 'index.js', 'routes.js', 'tests/server/**/*spec.js'], ['test:server']);
+    gulp.watch([ 'index.js', 'server/**/*.js', 'tests/server/**/*spec.js'], ['test:server']);
 });
 
 gulp.task('tests', ['karma', 'test:server:watch']);
@@ -127,7 +127,7 @@ gulp.task('server:start', ['build'], function() {
 
 // restart server if app.js changed
 gulp.task('watch', function () {
-    gulp.watch([ 'index.js', 'routes.js', 'client/app/**/*', 'client/index.html' ], ['server:restart']);
+    gulp.watch([ 'index.js', 'server/**/*.js', 'client/app/**/*', 'client/index.html' ], ['server:restart']);
 });
 
 // restart server if app.js changed
