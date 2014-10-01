@@ -35,10 +35,11 @@ describe("routes", function () {
     var app, $state, $rootScope;
     var appName = 'HousePointsApp';
     beforeEach(module(appName));
-    beforeEach(inject(function (_$state_, _$rootScope_) {
+    beforeEach(inject(function (_$state_, _$rootScope_, $templateCache) {
         app = angular.module(appName);
         $state = _$state_;
         $rootScope = _$rootScope_;
+        $templateCache.put('main/main.html', '');
     }));
 
     it("should have url / configured for state main", function () {

@@ -8,10 +8,17 @@ module.exports = function (app) {
     "use strict";
     app.use(router);
 
+    app.route('/api/users')
+        .get(function(req, res) {
+            res.send({
+                users: []
+            });
+        });
+
+
     // All other routes should redirect to the index.html
     app.route('/*')
         .get(function(req, res) {
             res.sendfile(app.get('appPath') + '/index.html');
         });
 };
-

@@ -31,9 +31,9 @@ gulp.task('jshint', function () {
 gulp.task('karma', function() {
     // Be sure to return the stream
     return gulp.src([
-        'bower_components/angular/angular.js',
-        'bower_components/angular-mocks/angular-mocks.js',
-        'bower_components/angular-ui-router/release/angular-ui-router.js',
+        'client/bower_components/angular/angular.js',
+        'client/bower_components/angular-mocks/angular-mocks.js',
+        'client/bower_components/angular-ui-router/release/angular-ui-router.js',
         'client/app/**/*.js',
         'tests/unit/**/*.js'
     ])
@@ -128,8 +128,6 @@ gulp.task('server:start', ['build'], function() {
 // restart server if app.js changed
 gulp.task('watch', function () {
     gulp.watch([ 'index.js', 'routes.js', 'client/app/**/*', 'client/index.html' ], ['server:restart']);
-    gulp.watch([ 'client/app/*.js', 'tests/unit/**/*.js'], ['jshint', 'karma']);
-    gulp.watch([ 'index.js', 'routes.js', 'tests/server/**/*spec.js'], ['test:server']);
 });
 
 // restart server if app.js changed

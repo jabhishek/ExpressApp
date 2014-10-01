@@ -22,9 +22,22 @@ describe('GET /', function() {
 describe('GET /invalidUrl', function() {
     it('should respond with 404', function(done) {
         request(app)
-            .get('/invalidUrl')
-            .expect(404)
+            .get('/api/users')
+            .expect(200)
+            .expect('Content-Type', /json/)
             .end(function(err) {
+                if (err) return done(err);
+                done();
+            });
+    });
+});
+
+describe('GET /invalidUrl', function() {
+    it('should respond with 202', function(done) {
+        request(app)
+            .get('/invalidUrl')
+            .expect(200)
+            .end(function(err, res) {
                 if (err) return done(err);
                 done();
             });
