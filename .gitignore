@@ -3,3 +3,4 @@ node_modules
 bower_components
 build
 tests/server/config/local.env.js
+server/config/local.env.js
