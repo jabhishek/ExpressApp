@@ -1,6 +1,6 @@
 (function () {
     'use strict';
-    angular.module('HousePointsApp', ['ui.router'])
+    angular.module('HousePointsApp', ['ui.router', 'ngCookies'])
         .config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
             $stateProvider
                 .state('main', {

@@ -14,7 +14,8 @@ var prependBowerPath = function (packageName) {
 };
 
 var vendors = ['angular/angular.js',
-               'angular-ui-router/release/angular-ui-router.js']
+               'angular-ui-router/release/angular-ui-router.js',
+               'angular-cookies/angular-cookies.js']
                .map(prependBowerPath);
 
 var appScripts = ['client/app/**/*.js'];
@@ -43,6 +44,7 @@ gulp.task('karma', ['set-env:test'], function() {
         'client/bower_components/angular/angular.js',
         'client/bower_components/angular-mocks/angular-mocks.js',
         'client/bower_components/angular-ui-router/release/angular-ui-router.js',
+        'client/bower_components/angular-cookies/angular-cookies.js',
         'client/app/**/*.js',
         'tests/unit/**/*.js'
     ])
