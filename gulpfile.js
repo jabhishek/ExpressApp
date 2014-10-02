@@ -28,7 +28,16 @@ gulp.task('jshint', function () {
 
 });
 
-gulp.task('karma', function() {
+
+gulp.task('set-env:test', function () {
+    return $gulp.env({
+        vars: {
+            NODE_ENV: 'test'
+        }
+    });
+});
+
+gulp.task('karma', ['set-env:test'], function() {
     // Be sure to return the stream
     return gulp.src([
         'client/bower_components/angular/angular.js',
@@ -57,7 +66,7 @@ gulp.task('protractor', function () {
         .on('error', $gulp.util.log);
 });
 
-gulp.task('test:server', function() {
+gulp.task('test:server', ['set-env:test'], function() {
     "use strict";
     return gulp.src('tests/server/**/*.spec.js', {read: false})
         .pipe($gulp.mocha({reporter: 'spec'}))
