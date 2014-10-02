@@ -4,6 +4,7 @@ var data = require("../../../data");
 var hasher = require("../hasher");
 var passport = require("passport");
 var localStrategy = require("passport-local").Strategy;
+var auth = require("../auth.service");
 
 function authenticateUser(email, password, next) {
     "use strict";
@@ -34,8 +35,8 @@ router.post('/', function (req, res, next) {
             if (error) return res.json(401, error);
             if (!user) return res.json(404, {message: 'Something went wrong, please try again.'});
 
-            // todo-abhi use jsonwebtoken to send token
-            res.json(200, {token: ""});
+            var token = auth.signToken(user._id, user.role);
+            res.json(200, {token: token});
         })(req, res, next)
     } else {
         return res.json(401, {});
