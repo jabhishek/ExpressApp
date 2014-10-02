@@ -33,7 +33,7 @@ describe("AuthService", function () {
         expect(AuthService.isLoggedIn()).toBe(true);
     });
 
-    it('login method should not set isLoggedIn to true if user not authenticated', function () {
+    it('login method should set isLoggedIn to false if user not authenticated', function () {
         AuthService.login(incorrectUser);
         $httpBackend.flush();
         expect(AuthService.isLoggedIn()).toBe(false);

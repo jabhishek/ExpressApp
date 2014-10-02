@@ -33,7 +33,7 @@ describe('GET /invalidUrl', function() {
 });
 
 describe('GET /invalidUrl', function() {
-    it('should respond with 202', function(done) {
+    it('should respond with 200', function(done) {
         request(app)
             .get('/invalidUrl')
             .expect(200)

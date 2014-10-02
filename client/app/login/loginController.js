@@ -1,15 +1,19 @@
 (function (app) {
     'use strict';
-    app.controller('loginController', [function() {
+    app.controller('loginController', function (AuthService, $state) {
         var vm = this;
         initForm();
-        vm.submit = function(valid, data) {
+        vm.submit = function (valid, user) {
             if (!valid) {
                 return;
             }
-
             console.log(valid);
-            console.log(data);
+            console.log(user);
+            AuthService.login(user)
+                .then(function () {
+                    $state.go('main');
+                });
+
         };
 
         function initForm() {
@@ -18,5 +22,5 @@
                 password: ''
             };
         }
-    }]);
+    });
 })(angular.module('HousePointsApp'));
