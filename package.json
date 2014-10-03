@@ -51,5 +51,8 @@
     "gulp-ng-annotate": "^0.3.3",
     "gulp-autoprefixer": "^1.0.1",
     "gulp-env": "^0.2.0"
+  },
+    "scripts": {
+    "start": "node index.js"
   }
 }
